@@ -17,8 +17,10 @@ public class ImageOps {
 	public static void main(String[] args) {
 
 		
-		// *** Testing the reading of an image from a file
-		// Reads image data from a file, into an array
+		/* 
+		* Test reading an image from a file
+		* Reads image data from a file, into an array
+		*/
 		int[][][] pic = read("tinypic.ppm");
 		// Displays the image matrix.
 		showData(pic);
@@ -30,17 +32,16 @@ public class ImageOps {
 
 	/**
 	 * Reads an image in PPM format from the given filename.
-	 * 
 	 * @param fileName - name of the given PPM file
 	 * @return - the image, as a 3-dimensional array
 	 */
 	public static int[][][] read(String filename) {
 
 		StdIn.setInput(filename);
-		StdIn.readLine();				              // read the ppm header.
-		int columns = StdIn.readInt(); 	              // number of columns in the ppm.
+		StdIn.readLine();			      // read the ppm header.
+		int columns = StdIn.readInt(); 	   	      // number of columns in the ppm.
 		int rows  = StdIn.readInt();                 // number of rows in the ppm.
-		StdIn.readInt();				             //ignor the RGB scale header ("255").
+		StdIn.readInt();			     //ignor the RGB scale header ("255").
 		int[][][] pic = new int[rows][columns][3];
 
 		//read the RGB data from the picture file and save it to array "pic". 
@@ -56,7 +57,6 @@ public class ImageOps {
 	
 	/**
 	 * Prints the array values, nicely formatted. 
-	 * 
 	 * @param pic - the image to display.
 	 */
 	public static void showData (int[][][] pic) {
@@ -96,7 +96,6 @@ public class ImageOps {
 	/**
 	 * Flips an image horizontally.
 	 * SIDE EFFECT: Changes the given image.
-	 * 
 	 * @param pic - the image to flip
 	 */
 	public static void flipHorizontally(int[][][] pic) 
@@ -113,7 +112,6 @@ public class ImageOps {
 	/**
 	 * Flips an image vertically
 	 * * SIDE EFFECT: Changes the given image.
-	 * 
 	 * @param pic - the image to flip
 	 */
 	public static void flipVertically(int[][][] pic) {
@@ -143,16 +141,15 @@ public class ImageOps {
 	/**
 	 * Turns an RGB color into a greyScale value, using a luminance formula.
 	 * The luminance is a weighted mean of the color's value, and is given by:
-	 * 0.299 * r + 0.587 * b + 0.114 * b.
-	 * 
+	 * 0.2126 * r + 0.7152 * b + 0.722 * G. (https://en.wikipedia.org/wiki/Relative_luminance)
 	 * @param color - the color to be greyScaled.
 	 * @return the greyscale value, as an array {greyscale, greyscale, greyscale}
 	 */
 	public static int[] luminance(int[] color) {
 		
-		double red  = 0.299 * color[0];
-		double green = 0.587 * color[1];
-		double blue = 0.114 * color[2];
+		double red  = 0.2126 * color[0];
+		double green = 0.7152 * color[1];
+		double blue = 0.722 * color[2];
 		double lum = (red + green + blue);
 		int i = 0;
 
@@ -166,7 +163,6 @@ public class ImageOps {
 	
 	/**
 	 * Creates a greyscaled version of an image.
-	 * 
 	 * @param pic - the given image
 	 * @return - the greyscaled version of the image
 	 */
@@ -185,8 +181,7 @@ public class ImageOps {
 	
 	/**
 	 * Creates a blurred version of an image.
-	 * Uses a block blur algorithm.
-	 * 
+	 * Uses a block blur algorithm, (https://en.wikipedia.org/wiki/Gaussian_blur). 
 	 * @param pic - the given image
 	 * @return - the blurred version of the image
 	 */
@@ -211,14 +206,16 @@ public class ImageOps {
 		return blurredPic;
 	}
 
-	// Blurs a given color of a given pixel in a given image.
-	// Stores the result in a blurred version of the given image, without effecting the given image.
-	// Uses a block blur algorithm.
-	// pic - the given image
-	// blurredPic - the blurred version of the given image
-    // row - the row of the pixel
-	// col - the column of the pixel
-	// color - the color to blur: 0-red, 1-green, 2-blue
+	/* 
+	* Blurs a given color of a given pixel in a given image.
+	* Stores the result in a blurred version of the given image, without effecting the given image.
+	* Uses a block blur algorithm (https://en.wikipedia.org/wiki/Gaussian_blur).
+	* @int[][][] pic - the given image
+	* @int[][][] blurredPic - the blurred version of the given image
+    	* @int row - the row of the pixel
+	* @int col - the column of the pixel
+	* @int color - the color to blur: 0-red, 1-green, 2-blue
+	*/
 	private static void blurColor(int[][][] pic, int[][][] blurredPic, int row, int col, int color) {
 		
 		double tempSum = 0;
@@ -241,11 +238,13 @@ public class ImageOps {
 	
 	
 	
-	// Returns the color intensity of a pixel, or -1 if the coordinates of the pixel are illegal.
-	// pic - the given source image
-	// row - the given row of the pixel
-	// col - the given column of the pixel
-	// color - the given color: 0-red, 1-green, 2-blue
+	/* 
+	* @param pic - the given source image
+	* @param row - the given row of the pixel
+	* @param col - the given column of the pixel
+	* @param color - the given color: 0-red, 1-green, 2-blue
+	* @return - the color intensity of a pixel, or -1 if the coordinates of the pixel are illegal..
+	*/
 	private static int getColorIntensity(int[][][] pic, int row, int col, int color) {
 
 		if(row >=0  && row <= pic.length-1 && col >= 0 && col <= pic[row].length){
