@@ -4,6 +4,7 @@
 
 /**
  * A library of image editing functions.
+ this is sacondary.
  */
 public class ImageOps {
 	// Use these constants, as needed.
